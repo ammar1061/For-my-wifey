@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لأمونتي ♥️</title>
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose: #c2185b;
+    --rose-light: #f48fb1;
+    --gold: #c9a84c;
+    --cream: #fff9f5;
+    --deep: #3d1020;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Naskh Arabic', serif;
+    background: var(--cream);
+    color: var(--deep);
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  .phase {
+    display: none;
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 2rem 1.2rem 5rem;
+  }
+  .phase.active { display: flex; }
+
+  /* PETALS */
+  .petals-container {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 0; overflow: hidden;
+  }
+  .petals-hidden .petals-container { opacity: 0; }
+  .petal { position: absolute; top: -40px; animation: fall linear infinite; }
+  @keyframes fall {
+    0%   { transform: translateY(-40px) rotate(0deg);   opacity: 0.55; }
+    100% { transform: translateY(110vh)  rotate(360deg); opacity: 0; }
+  }
+
+  .corner { display: none; }
+
+  /* NAV DOTS */
+  .nav-dots {
+    position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 8px; z-index: 100;
+  }
+  .dot {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: rgba(194,24,91,0.22);
+    transition: background 0.3s, transform 0.3s; cursor: pointer;
+  }
+  .dot.active { background: var(--rose); transform: scale(1.5); }
+
+  /* KEYFRAMES */
+  @keyframes float     { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  @keyframes fadeUp    { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes pulse     { 0%,100%{box-shadow:0 8px 28px rgba(194,24,91,.38)} 50%{box-shadow:0 8px 44px rgba(194,24,91,.65),0 0 0 10px rgba(194,24,91,.07)} }
+  @keyframes heartbeat { 0%,100%{transform:scale(1)} 15%{transform:scale(1.09)} 30%{transform:scale(1)} 45%{transform:scale(1.05)} }
+  @keyframes catWalk   { 0%{left:-80px;transform:scaleX(1)} 49%{left:calc(100% + 80px);transform:scaleX(1)} 50%{left:calc(100% + 80px);transform:scaleX(-1)} 99%{left:-80px;transform:scaleX(-1)} 100%{left:-80px;transform:scaleX(1)} }
+  @keyframes birdFly   { 0%{right:-80px} 100%{right:calc(100% + 80px)} }
+  @keyframes planeFly  { 0%{left:70%;top:58%;transform:scaleX(-1) scale(1)} 50%{left:48%;top:36%;transform:scaleX(-1) scale(1.12)} 100%{left:34%;top:17%;transform:scaleX(-1) scale(1)} }
+  @keyframes arrowBounce { 0%,100%{transform:translateY(0);opacity:.65} 50%{transform:translateY(7px);opacity:1} }
+  @keyframes confettiFall { 0%{opacity:1;transform:translateY(0) rotate(0deg)} 100%{opacity:0;transform:translateY(180px) rotate(720deg)} }
+  @keyframes heartFloat { 0%{opacity:1;transform:translateY(0) scale(1)} 100%{opacity:0;transform:translateY(-140px) scale(.4)} }
+  @keyframes bubbleRise {
+    0%   { transform: translateY(0) scale(1);   opacity: .75; }
+    80%  { opacity: .6; }
+    100% { transform: translateY(-105vh) scale(1.1); opacity: 0; }
+  }
+  .bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%,
+      rgba(255,255,255,0.95) 0%,
+      rgba(240,248,255,0.7) 35%,
+      rgba(200,230,255,0.35) 65%,
+      rgba(180,220,255,0.15) 100%);
+    border: 1px solid rgba(255,255,255,0.8);
+    box-shadow:
+      inset -3px -3px 8px rgba(180,210,255,0.4),
+      inset 2px 2px 6px rgba(255,255,255,0.9),
+      0 2px 8px rgba(150,200,255,0.2);
+    pointer-events: none;
+    animation: bubbleRise linear infinite;
+    z-index: 2;
+  }
+  .bubble::after {
+    content: '';
+    position: absolute;
+    top: 18%; left: 22%;
+    width: 28%; height: 18%;
+    background: rgba(255,255,255,0.85);
+    border-radius: 50%;
+    transform: rotate(-35deg);
+  }
+
+  /* SHARED CARD */
+  .card {
+    position: relative; z-index: 5;
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(194,24,91,0.14);
+    border-radius: 28px;
+    padding: clamp(1.8rem,5vw,3rem) clamp(1.4rem,5vw,3rem);
+    max-width: 660px; width: 100%;
+    box-shadow: 0 18px 55px rgba(194,24,91,.1), 0 4px 14px rgba(0,0,0,.04);
+    animation: fadeUp 0.75s ease both;
+    text-align: center;
+  }
+  .divider {
+    width: 55px; height: 1.5px;
+    background: linear-gradient(90deg,transparent,var(--rose-light),transparent);
+    margin: 1.1rem auto;
+  }
+
+  /* BUTTONS */
+  .btn-main {
+    position: relative; z-index: 10;
+    background: linear-gradient(135deg,var(--rose) 0%,#880e4f 100%);
+    color: #fff; border: none;
+    padding: .9rem 2.8rem;
+    font-family: 'Aref Ruqaa', serif; font-size: 1.45rem;
+    border-radius: 50px; cursor: pointer;
+    animation: pulse 2.4s ease-in-out infinite;
+    transition: transform .18s;
+  }
+  .btn-main:hover  { transform: scale(1.06); }
+  .btn-main:active { transform: scale(0.96); }
+
+  .btn-next {
+    margin-top: 1.8rem; background: transparent;
+    border: 1.5px solid var(--rose); color: var(--rose);
+    padding: .6rem 1.8rem; border-radius: 50px;
+    font-family: 'Noto Naskh Arabic', serif; font-size: .95rem;
+    cursor: pointer; transition: all .18s; position: relative; z-index: 10;
+  }
+  .btn-next:hover { background: var(--rose); color: #fff; }
+
+  /* ── PHASE 1 — DARK ── */
+  #phase1 {
+    background: radial-gradient(ellipse at 50% 40%, #1a0010 0%, #0d0008 60%, #000000 100%);
+    text-align: center;
+    position: relative;
+  }
+  .hook-animals {
+    font-size: 3rem; margin-bottom: 1.2rem;
+    animation: float 3.2s ease-in-out infinite;
+    position: relative; z-index: 2;
+  }
+  .hook-headline {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(2.4rem,8vw,4.5rem);
+    color: #e8c46a;
+    line-height: 1.2; margin-bottom: .5rem;
+    animation: fadeUp 1s ease both;
+    text-shadow: 0 0 30px rgba(232,196,106,0.5), 0 2px 8px rgba(0,0,0,0.8);
+    position: relative; z-index: 2;
+  }
+  .hook-sub {
+    font-family: 'Aref Ruqaa', serif;
+    font-size: clamp(.95rem,3vw,1.25rem);
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 2rem;
+    animation: fadeUp 1.2s ease both;
+    position: relative; z-index: 2;
+  }
+  #phase1 .btn-main {
+    background: linear-gradient(135deg, #c9a84c, #e8c46a, #a07830);
+    color: #1a0010;
+    font-weight: 700;
+    box-shadow: 0 6px 24px rgba(200,160,60,0.45);
+    position: relative; z-index: 2;
+  }
+  #phase1 .btn-main:hover { transform: scale(1.06); box-shadow: 0 10px 32px rgba(200,160,60,0.6); }
+  .cat-walk { font-size: 2.8rem; position: absolute; bottom: 13%; animation: catWalk 9s linear infinite; z-index:2; }
+  .bird-fly { font-size: 2.3rem; position: absolute; top: 17%; animation: birdFly 11s linear infinite; z-index:2; }
+  .dark-heart {
+    position: absolute; pointer-events:none; z-index:1;
+    animation: darkHeartFloat linear infinite;
+    opacity: 0;
+    font-size: 1.2rem;
+  }
+  @keyframes darkHeartFloat {
+    0%   { transform: translateY(0) scale(0.6); opacity: 0; }
+    15%  { opacity: 0.7; }
+    85%  { opacity: 0.4; }
+    100% { transform: translateY(-90vh) scale(1.1) rotate(20deg); opacity: 0; }
+  }
+  .star-dot {
+    position: absolute; border-radius: 50%;
+    background: white; pointer-events: none; z-index: 1;
+    animation: starTwinkle ease-in-out infinite alternate;
+  }
+  @keyframes starTwinkle {
+    from { opacity: .15; transform: scale(0.8); }
+    to   { opacity: .9;  transform: scale(1.2); }
+  }
+
+  /* ── PHASE 2 ── */
+  #phase2 { background: linear-gradient(155deg,#fff5f8 0%,#fff1ee 50%,#fce4ec 100%); }
+  .msg-date {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(1.9rem,6vw,2.8rem);
+    color: var(--gold); text-shadow: 1px 1px 4px rgba(201,168,76,.22); margin-bottom: .2rem;
+  }
+  .msg-para { font-size: clamp(1rem,2.5vw,1.18rem); line-height: 2.1; color: var(--deep); direction: rtl; }
+  .msg-sign { font-family: 'Aref Ruqaa', serif; font-size: 1.25rem; color: var(--rose); margin-top: 1.2rem; }
+
+  /* ── PHASE 3 ── */
+  #phase3 { background: linear-gradient(145deg,#fff9f5 0%,#fce4ec 55%,#f3e5f5 100%); }
+  .map-title {
+    font-family: 'Aref Ruqaa', serif;
+    font-size: clamp(1.2rem,3.5vw,1.6rem);
+    color: var(--deep); line-height: 1.8; margin-bottom: 1rem;
+  }
+  .map-svg-wrap {
+    position: relative; width: 100%; height: 248px;
+    background: linear-gradient(135deg,#d9edf9 0%,#ede7f6 100%);
+    border-radius: 14px; overflow: hidden;
+    border: 1px solid rgba(194,24,91,.07);
+  }
+  .map-svg-wrap svg { width: 100%; height: 100%; }
+  .plane-anim { position: absolute; font-size: 1.9rem; animation: planeFly 5s ease-in-out infinite; z-index: 10; }
+  .map-pin { position: absolute; font-size: 1.6rem; cursor: pointer; transition: transform .2s; z-index: 15; }
+  .map-pin:hover { transform: scale(1.4) translateY(-4px); }
+  .map-pin .tip {
+    display: none; position: absolute; bottom: 110%; left: 50%; transform: translateX(-50%);
+    background: var(--rose); color: #fff; padding: 3px 10px; border-radius: 20px;
+    font-size: .78rem; white-space: nowrap;
+    font-family: 'Noto Naskh Arabic', serif; box-shadow: 0 3px 10px rgba(0,0,0,.18);
+  }
+  .map-pin:hover .tip { display: block; }
+  .map-en {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(1.3rem,4vw,1.9rem);
+    color: var(--rose); margin-top: .8rem;
+  }
+
+  /* ── PHASE 4 ── */
+  #phase4 { background: radial-gradient(ellipse at center,#fff9f5 0%,#fce4ec 65%,#f8bbd9 100%); }
+  .milestone-label { font-family: 'Aref Ruqaa', serif; font-size: clamp(1rem,3vw,1.3rem); color: #aaa; margin-bottom: .2rem; }
+  .milestone-num {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(5.5rem,20vw,9rem);
+    color: var(--rose); line-height: 1;
+    text-shadow: 3px 3px 18px rgba(194,24,91,.22);
+    animation: heartbeat 2.2s ease-in-out infinite;
+  }
+  .milestone-text { font-family: 'Aref Ruqaa', serif; font-size: clamp(1.15rem,3.5vw,1.6rem); color: var(--deep); margin-top: .4rem; line-height: 1.8; }
+  .milestone-sub { font-size: clamp(.9rem,2.5vw,1.05rem); color: #aaa; margin-top: .7rem; font-family: 'Noto Naskh Arabic', serif; }
+  .confetti-emoji { position: absolute; font-size: 1.4rem; animation: confettiFall linear; pointer-events: none; }
+
+  /* ── PHASE 5 ── */
+  #phase5 { background: linear-gradient(160deg,#fff0f5 0%,#fce4ec 45%,#fff9f0 100%); }
+  .final-title {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(2.4rem,8vw,3.8rem);
+    color: var(--rose); text-shadow: 2px 2px 8px rgba(194,24,91,.18); margin-bottom: .3rem;
+  }
+  .final-animals { font-size: 2.8rem; margin: .8rem 0; animation: float 3s ease-in-out infinite; }
+  .arrows-wrap { display: flex; flex-direction: column; align-items: center; gap: 1px; margin: .5rem 0 .8rem; }
+  .arr {
+    font-size: 1.5rem; color: var(--rose); line-height: 1;
+    animation: arrowBounce 1.3s ease-in-out infinite;
+  }
+  .arr:nth-child(2) { animation-delay: .18s; }
+  .arr:nth-child(3) { animation-delay: .36s; }
+  .btn-video {
+    position: relative; z-index: 10; display: inline-block;
+    background: linear-gradient(135deg,#880e4f 0%,var(--rose) 100%);
+    color: #fff; text-decoration: none;
+    padding: 1.1rem 3.2rem;
+    font-family: 'Aref Ruqaa', serif; font-size: 1.6rem;
+    border-radius: 50px; box-shadow: 0 10px 36px rgba(194,24,91,.48);
+    transition: transform .18s; border: 1.5px solid rgba(255,255,255,.22);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  .btn-video:hover { transform: scale(1.07); }
+  .forever { font-family: 'Great Vibes', cursive; font-size: clamp(1.6rem,5vw,2.2rem); color: var(--gold); margin-top: 1.3rem; direction: ltr; }
+  .hearts-float { position: absolute; pointer-events: none; font-size: 1.4rem; animation: heartFloat 3s ease-in infinite; z-index: 2; }
+
+  @media (max-width:480px) {
+    .card { padding: 1.5rem 1.1rem; }
+    .map-svg-wrap { height: 185px; }
+  }
+
+  /* ── PROMISE CARDS ── */
+  .promise-card {
+    background: linear-gradient(135deg,rgba(255,255,255,0.9),rgba(255,240,248,0.85));
+    border: 1.5px solid rgba(233,30,99,0.2);
+    border-radius: 16px;
+    padding: .85rem 1.2rem;
+    margin-bottom: .7rem;
+    cursor: pointer;
+    transition: all .35s ease;
+    box-shadow: 0 3px 12px rgba(233,30,99,0.1);
+    text-align: center;
+    position: relative;
+  }
+  .promise-card:hover { transform: scale(1.02); box-shadow: 0 6px 20px rgba(233,30,99,0.2); }
+  .promise-front {
+    font-family: 'Aref Ruqaa', serif;
+    font-size: 1.05rem;
+    color: var(--deep);
+    font-weight: 700;
+  }
+  .promise-back {
+    display: none;
+    font-family: 'Aref Ruqaa', serif;
+    font-size: .88rem;
+    color: var(--deep);
+    line-height: 1.85;
+    direction: rtl;
+    text-align: right;
+    margin-top: .5rem;
+    padding-top: .5rem;
+    border-top: 1px solid rgba(233,30,99,0.15);
+  }
+  .promise-card.open .promise-front { color: #e91e63; }
+  .promise-card.open .promise-back  { display: block; }
+
+  /* ── COUNTDOWN ── */
+  @keyframes planeFlyLR {
+    0%   { left: 8%; transform: scaleX(1); }
+    48%  { left: 86%; transform: scaleX(1); }
+    50%  { left: 86%; transform: scaleX(-1); }
+    98%  { left: 8%;  transform: scaleX(-1); }
+    100% { left: 8%;  transform: scaleX(1); }
+  }
+  .count-box {
+    background: linear-gradient(135deg,rgba(255,255,255,0.9),rgba(255,240,248,0.8));
+    border: 1.5px solid rgba(233,30,99,0.25);
+    border-radius: 14px;
+    padding: .6rem .5rem;
+    min-width: 58px;
+    box-shadow: 0 4px 14px rgba(233,30,99,0.12);
+  }
+  .count-num {
+    font-family: 'Georgia', serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--deep);
+    line-height: 1;
+  }
+  .count-lbl {
+    font-family: 'Aref Ruqaa', serif;
+    font-size: .7rem;
+    color: #ad1457;
+    margin-top: .2rem;
+  }
+
+  /* ── PHASE 8 FINALE ── */
+  @keyframes pulseRing {
+    0%   { transform: translate(-50%,-50%) scale(0.9); opacity:.5; }
+    50%  { transform: translate(-50%,-50%) scale(1.08); opacity:.15; }
+    100% { transform: translate(-50%,-50%) scale(0.9); opacity:.5; }
+  }
+  @keyframes twinkle {
+    0%,100% { opacity:.3; transform:scale(0.8); }
+    50%     { opacity:1;  transform:scale(1.2); }
+  }
+  @keyframes revealText {
+    from { opacity:0; transform:translateY(18px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  @keyframes heartPulse {
+    0%,100% { transform: scale(1); }
+    50%     { transform: scale(1.18); }
+  }
+  @keyframes shimmer {
+    0%   { background-position: -200% center; }
+    100% { background-position:  200% center; }
+  }
+  .finale-wrap {
+    position:relative; z-index:1;
+    max-width:500px; margin:0 auto;
+    padding: 2rem 1.4rem 1.8rem;
+    background: linear-gradient(160deg,rgba(255,255,255,0.97),rgba(255,236,252,0.97));
+    border-radius: 28px;
+    box-shadow: 0 24px 70px rgba(200,0,80,0.2), 0 0 0 1.5px rgba(233,30,99,0.15);
+  }
+  .finale-badge {
+    display:inline-block;
+    background: linear-gradient(90deg,#ff6b9d,#e91e63,#c2185b,#ff6b9d);
+    background-size: 200% auto;
+    animation: shimmer 3s linear infinite;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-family:'Aref Ruqaa',serif;
+    font-size:clamp(1.1rem,4vw,1.5rem);
+    font-weight:700;
+    margin-bottom:.3rem;
+  }
+  .finale-title-big {
+    font-family:'Great Vibes',cursive;
+    font-size:clamp(2rem,7vw,2.8rem);
+    color: #c2185b;
+    line-height:1.2;
+    margin:.5rem 0 .8rem;
+    animation: revealText 1s ease both;
+  }
+  .finale-divider {
+    display:flex; align-items:center; gap:.7rem;
+    justify-content:center; margin:.8rem 0;
+  }
+  .finale-divider::before,.finale-divider::after {
+    content:''; flex:1;
+    height:1px;
+    background:linear-gradient(to right,transparent,rgba(233,30,99,.35),transparent);
+  }
+  .video-btn-big {
+    display:block; text-decoration:none;
+    margin: 1.2rem auto 0;
+    padding: 1rem 2.2rem;
+    background: linear-gradient(135deg,#e91e63,#880e4f);
+    color:white;
+    font-family:'Aref Ruqaa',serif;
+    font-size:1.15rem;
+    font-weight:700;
+    border-radius:50px;
+    box-shadow: 0 8px 28px rgba(233,30,99,0.45), 0 0 0 3px rgba(233,30,99,0.15);
+    transition: all .3s;
+    animation: heartPulse 2s ease-in-out infinite;
+    position:relative;
+  }
+  .video-btn-big:hover { transform:scale(1.06); box-shadow: 0 12px 36px rgba(233,30,99,0.6); }
+  .video-btn-big::before {
+    content:'';
+    position:absolute; inset:-4px;
+    border-radius:54px;
+    background: linear-gradient(135deg,#ff6b9d,#e91e63,#ad1457,#ff6b9d);
+    background-size:200% 200%;
+    animation: shimmer 2.5s linear infinite;
+    z-index:-1;
+    opacity:.5;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ BACKGROUND MUSIC ══ -->
+<audio id="bgMusic" loop preload="auto">
+  <source src="song.mp3" type="audio/mpeg"/>
+</audio>
+<div id="music-btn" onclick="toggleMusic()" title="موسيقى"
+  style="position:fixed;bottom:72px;right:16px;z-index:999;
+         width:44px;height:44px;border-radius:50%;
+         background:linear-gradient(135deg,#e91e63,#ad1457);
+         display:flex;align-items:center;justify-content:center;
+         font-size:1.3rem;cursor:pointer;
+         box-shadow:0 4px 14px rgba(233,30,99,.45);
+         transition:transform .2s;">🎵</div>
+
+<div class="petals-container" id="petalsContainer"></div>
+
+<div class="nav-dots">
+  <div class="dot active" onclick="goTo(0)"></div>
+  <div class="dot" onclick="goTo(1)"></div>
+  <div class="dot" onclick="goTo(2)"></div>
+  <div class="dot" onclick="goTo(3)"></div>
+  <div class="dot" onclick="goTo(4)"></div>
+  <div class="dot" onclick="goTo(5)"></div>
+  <div class="dot" onclick="goTo(6)"></div>
+  <div class="dot" onclick="goTo(7)"></div>
+</div>
+
+<!-- ══ PHASE 1 ══ -->
+<div class="phase active" id="phase1">
+  <div id="starsContainer" style="position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1;"></div>
+  <div style="position:relative;z-index:2;text-align:center;width:100%;">
+    <div class="hook-animals" style="font-size:2.4rem;letter-spacing:.4rem;opacity:.9;">🐱 🌹 🦜</div>
+    <div style="font-family:'Aref Ruqaa',serif;font-size:.9rem;color:rgba(255,255,255,0.35);margin-bottom:1rem;letter-spacing:2px;">· · ·</div>
+    <div class="hook-headline" style="direction:rtl;">عندي مفاجأة إلكِ...</div>
+    <div style="margin:1.2rem auto;width:60%;height:1px;background:linear-gradient(to right,transparent,rgba(200,160,60,0.6),transparent);"></div>
+    <div style="font-size:1.6rem;margin:.5rem 0;animation:float 2s ease-in-out infinite;">❤️</div>
+    <button class="btn-main" onclick="startSurprise()" style="margin-top:.8rem;">اضغطي هون 💌</button>
+  </div>
+  <div class="cat-walk">🐈</div>
+  <div class="bird-fly">🦜</div>
+</div>
+
+<!-- ══ PHASE 2 ══ -->
+<div class="phase" id="phase2">
+  <div class="card">
+    <div class="msg-date">١٠ · ١٠ · ٢٠٢٥</div>
+    <div class="divider"></div>
+    <p class="msg-para">
+      هاد تاني احلى تاريخ بحياتي، بهاليوم صرتي زوجتي وحبيبة عمري ونور عيوني،
+      يا حنونة انتي يا جميلة الجميلات ♥️
+    </p>
+    <div class="divider"></div>
+    <p class="msg-para">من هون بلشت الحكاية ومكملين لآخر المشوار سوا ان شاء الله ♥️</p>
+    <div class="divider"></div>
+    <p class="msg-para" style="opacity:.8;font-style:italic;">
+      يمكن عم تسألي شو أول احلى تاريخ؟<br>
+      رح يكون تاريخ اليوم يلي رح شوفك وضمك وامسكلك ايديكي ♥️
+    </p>
+    <div class="msg-sign">بحبك امونة ♥️♥️….</div>
+    <div style="font-size:1.6rem;margin-top:1rem;letter-spacing:.3rem;">🌹 🦜 🐱 🌹</div>
+    <button class="btn-next" onclick="goTo(2)">تابعي ←</button>
+  </div>
+</div>
+
+<!-- ══ PHASE 3 ══ -->
+<div class="phase" id="phase3">
+  <div class="card" style="max-width:700px;">
+    <div class="map-title">موعد اللقاء يقترب،<br>وقلبي سبقني فرحاً بذاك اليوم… 🌹</div>
+    <div class="map-svg-wrap">
+      <svg viewBox="0 0 500 240" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="og" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%"   style="stop-color:#b3d9f7"/>
+            <stop offset="100%" style="stop-color:#dceefb"/>
+          </linearGradient>
+          <linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%"   style="stop-color:#d4e8b5"/>
+            <stop offset="100%" style="stop-color:#c5dda0"/>
+          </linearGradient>
+        </defs>
+        <rect width="500" height="240" fill="url(#og)"/>
+        <ellipse cx="200" cy="95"  rx="130" ry="75" fill="url(#lg)" opacity=".9"/>
+        <ellipse cx="210" cy="45"  rx="60"  ry="35" fill="#b8d98d"  opacity=".9"/>
+        <ellipse cx="370" cy="150" rx="90"  ry="55" fill="url(#lg)" opacity=".9"/>
+        <ellipse cx="220" cy="185" rx="150" ry="40" fill="#e8d5a0"  opacity=".7"/>
+        <path d="M 370 145 Q 290 80 210 55" stroke="#c2185b" stroke-width="2" fill="none" stroke-dasharray="6,4" opacity=".5"/>
+        <text x="355" y="165" font-family="Noto Naskh Arabic" font-size="12" fill="#3d1020" text-anchor="middle">سوريا 🇸🇾</text>
+        <text x="355" y="180" font-family="Arial" font-size="14" fill="#c2185b" text-anchor="middle">📍</text>
+        <text x="210" y="30"  font-family="Arial" font-size="11" fill="#3d1020" text-anchor="middle">Sweden 🇸🇪</text>
+        <text x="210" y="45"  font-family="Arial" font-size="14" fill="#c2185b" text-anchor="middle">📍</text>
+        <circle cx="355" cy="175" r="12" fill="none" stroke="#c2185b" stroke-width="1.5" opacity=".3">
+          <animate attributeName="r" values="8;16;8" dur="2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values=".45;0;.45" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="210" cy="40" r="12" fill="none" stroke="#c2185b" stroke-width="1.5" opacity=".3">
+          <animate attributeName="r" values="8;16;8" dur="2s" repeatCount="indefinite" begin="1s"/>
+          <animate attributeName="opacity" values=".45;0;.45" dur="2s" repeatCount="indefinite" begin="1s"/>
+        </circle>
+      </svg>
+      <div class="plane-anim">✈️</div>
+    </div>
+    <div class="map-en">From Syria to my Arms ♥️ 🫂</div>
+    <button class="btn-next" onclick="goTo(3)" style="margin-top:1.4rem;">تابعي ←</button>
+  </div>
+</div>
+
+<!-- ══ PHASE 4 ══ -->
+<div class="phase" id="phase4">
+  <div class="card" id="milestoneCard">
+    <div class="milestone-label">عمرها يصبح</div>
+    <div class="milestone-num">20</div>
+    <div class="milestone-text">حبيبتي كبرت سنة ♥️</div>
+    <div style="font-size:1.8rem;margin:1rem 0;letter-spacing:.3rem;">🌹 🐱 🦜 🌹</div>
+    <div class="milestone-sub">كل سنة وأنتِ أحلى يا امونة<br>عقبال كل السنين معي ♥️</div>
+    <button class="btn-next" onclick="goTo(4)" style="margin-top:1.5rem;">الفاجأة الأخيرة ←</button>
+  </div>
+</div>
+
+<!-- ══ PHASE 5 — وعود ══ -->
+<div class="phase" id="phase5">
+  <div class="card" style="max-width:500px;">
+    <div style="font-size:2.2rem;margin-bottom:.4rem;">🤝💍</div>
+    <div style="font-family:'Aref Ruqaa',serif;font-size:1.5rem;color:var(--deep);font-weight:700;margin-bottom:1rem;">وعودي إلكِ يا أمونة</div>
+    <div style="font-family:'Aref Ruqaa',serif;font-size:.82rem;color:#ad1457;margin-bottom:1.2rem;opacity:.7;">اضغطي على كل وعد تفتحيه ♥️</div>
+
+    <div class="promise-card" onclick="this.classList.toggle('open')">
+      <div class="promise-front">🌹 وعد ١</div>
+      <div class="promise-back">بوعدك إن شاء الله أكون الشخص اللي يسعدك ويخاف عليكِ دايماً — سندك وعونك، ودير بالي عليكِ عطول ♥️<br><br>هاد كان أول وعد وعدتكِ إياه، ورح ضل عنده لآخر عمري ♥️♥️</div>
+    </div>
+
+    <div class="promise-card" onclick="this.classList.toggle('open')">
+      <div class="promise-front">💖 وعد ٢</div>
+      <div class="promise-back">رح نجتمع عن قريب إن شاء الله يا عمري، وتكون فرحة هالعمر ♥️♥️</div>
+    </div>
+
+    <div class="promise-card" onclick="this.classList.toggle('open')">
+      <div class="promise-front">⭐ وعد ٣</div>
+      <div class="promise-back">بوعدك رح أحاول كل يوم أكون الشخص اللي يستاهلك، وحطِك بعيوني يا أمونة 🌹</div>
+    </div>
+
+    <button class="btn-main" style="margin-top:1.2rem;font-size:.95rem;padding:.7rem 2rem;" onclick="goTo(5)">التالي ♥️</button>
+  </div>
+</div>
+
+<!-- ══ PHASE 6 — رسالة سرية ══ -->
+<div class="phase" id="phase6">
+  <div class="card" style="max-width:480px;">
+    <div style="font-size:2rem;margin-bottom:.5rem;">🔐</div>
+    <div style="font-family:'Aref Ruqaa',serif;font-size:1.4rem;color:var(--deep);font-weight:700;margin-bottom:.5rem;">رسالة سرية</div>
+    <div style="font-family:'Aref Ruqaa',serif;font-size:.85rem;color:#ad1457;margin-bottom:1rem;opacity:.8;">في رسالة مخبية لإلك بس، ادخلي الكلمة السر عشان تفتحيها 🗝️</div>
+
+    <div id="secret-locked">
+      <input id="secret-input" type="text" placeholder="كلمة السر..."
+        style="width:100%;padding:.7rem 1rem;border-radius:12px;border:2px solid #e91e63;font-family:'Aref Ruqaa',serif;font-size:1rem;text-align:center;outline:none;color:var(--deep);background:rgba(255,255,255,0.9);box-sizing:border-box;margin-bottom:.8rem;"
+        oninput="checkSecret(this.value)"/>
+      <div id="secret-hint" style="font-family:'Aref Ruqaa',serif;font-size:.78rem;color:#ad1457;opacity:.7;">💡 تلميح: اسمك الحلو 🌸</div>
+      <div id="secret-error" style="display:none;font-family:'Aref Ruqaa',serif;font-size:.82rem;color:#c62828;margin-top:.5rem;">❌ كلمة السر غلط، حاولي تاني 😄</div>
+    </div>
+
+    <div id="secret-message" style="display:none;">
+      <div style="font-size:1.8rem;margin-bottom:.8rem;animation:heartFloat 2s ease-in-out infinite alternate;">💌</div>
+      <div style="font-family:'Aref Ruqaa',serif;font-size:.95rem;color:var(--deep);line-height:2;text-align:right;direction:rtl;">
+        أمونتي… يا أحلى شي بحياتي،<br><br>
+        كل يوم بصحى وأول شي بفكر فيه هو إنتِ — بشتاقلك بطريقة ما في كلمات توصفها عنجد،
+        بشتاق لصوتك، لضحكتك، لبسمتك، لعيونك الحلوين وخدودك الكربوجين..
+        مشتاق إلك، وقعها أحلى من "مشتاقلك" ♥️😂<br><br>
+        المسافة بيننا صعبة بعرف، بس رح نصبر وننال خير يا عمري —
+        قدي أنتِ غالية عليّ، أنتِ قلبي وروحي.<br><br>
+        يحبك يا أمونة، من كل قلبي ♥️♥️💋
+      </div>
+      <div style="font-family:'Great Vibes',cursive;font-size:1.3rem;color:var(--gold);margin-top:1rem;direction:ltr;">Forever Yours ♥️</div>
+      <button class="btn-main" style="margin-top:1rem;font-size:.95rem;padding:.7rem 2rem;" onclick="goTo(6)">التالي 🕐</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PHASE 7 — ساعة عد تنازلي ══ -->
+<div class="phase" id="phase7">
+  <div class="card" style="max-width:480px;">
+    <div style="font-size:2rem;margin-bottom:.4rem;">🕐✈️</div>
+    <div style="font-family:'Aref Ruqaa',serif;font-size:1.4rem;color:var(--deep);font-weight:700;margin-bottom:.3rem;">اللقاء قريب إن شاء الله</div>
+    <div style="font-family:'Aref Ruqaa',serif;font-size:.85rem;color:#ad1457;margin-bottom:1.2rem;opacity:.8;">المسافة مؤقتة، واللقاء حتمي 🌹</div>
+
+    <div style="position:relative;height:70px;margin-bottom:1rem;overflow:hidden;">
+      <div style="position:absolute;bottom:8px;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,#f48fb1,#e91e63,#f48fb1,transparent);border-radius:4px;"></div>
+      <div id="plane-anim" style="position:absolute;bottom:6px;font-size:1.6rem;animation:planeFlyLR 4s linear infinite;">✈️</div>
+      <div style="position:absolute;bottom:0;left:8px;font-size:1.1rem;">🇸🇾</div>
+      <div style="position:absolute;bottom:0;right:8px;font-size:1.1rem;">🇸🇪</div>
+    </div>
+
+    <div style="display:flex;gap:.7rem;justify-content:center;margin-bottom:1.2rem;" id="countdown-wrap">
+      <div class="count-box"><div class="count-num" id="cd-days">?</div><div class="count-lbl">يوم</div></div>
+      <div class="count-box"><div class="count-num" id="cd-hrs">?</div><div class="count-lbl">ساعة</div></div>
+      <div class="count-box"><div class="count-num" id="cd-min">?</div><div class="count-lbl">دقيقة</div></div>
+      <div class="count-box"><div class="count-num" id="cd-sec">?</div><div class="count-lbl">ثانية</div></div>
+    </div>
+
+    <div style="font-family:'Aref Ruqaa',serif;font-size:.88rem;color:var(--deep);opacity:.75;margin-bottom:.6rem;">
+      "كل ثانية بتعدي، بتقربنا أكتر ♥️"
+    </div>
+    <div style="font-family:'Aref Ruqaa',serif;font-size:.78rem;color:#ad1457;opacity:.6;margin-bottom:1rem;">
+      📍 التاريخ لسه ما تحدد، بس القلب عارف إنه قريب 🌹
+    </div>
+
+    <button class="btn-main" style="font-size:.95rem;padding:.7rem 2rem;" onclick="goTo(7)">
+      ارجع للمفاجأة 🌸
+    </button>
+  </div>
+</div>
+
+<!-- ══ PHASE 8 — المفاجأة الكبرى ══ -->
+<div class="phase" id="phase8">
+  <div style="position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0;">
+    <div style="position:absolute;top:50%;left:50%;width:90vmin;height:90vmin;border-radius:50%;border:2px solid rgba(233,30,99,0.1);animation:pulseRing 4s ease-in-out infinite;"></div>
+    <div style="position:absolute;top:50%;left:50%;width:65vmin;height:65vmin;border-radius:50%;border:2px solid rgba(233,30,99,0.15);animation:pulseRing 4s ease-in-out infinite 1s;"></div>
+    <div style="position:absolute;top:50%;left:50%;width:40vmin;height:40vmin;border-radius:50%;border:2px solid rgba(233,30,99,0.22);animation:pulseRing 4s ease-in-out infinite 2s;"></div>
+  </div>
+
+  <div class="finale-wrap">
+    <div style="position:absolute;top:12px;left:16px;font-size:1.2rem;animation:twinkle 2s infinite;">✨</div>
+    <div style="position:absolute;top:14px;right:16px;font-size:1rem;animation:twinkle 2.5s infinite .4s;">⭐</div>
+    <div style="position:absolute;bottom:16px;left:14px;font-size:.9rem;animation:twinkle 1.8s infinite .8s;">✨</div>
+    <div style="position:absolute;bottom:14px;right:16px;font-size:1.1rem;animation:twinkle 2.2s infinite 1.2s;">⭐</div>
+
+    <div style="font-size:2rem;letter-spacing:.5rem;margin-bottom:.6rem;animation:float 3s ease-in-out infinite;">🌹 💌 🌹</div>
+    <div class="finale-badge">✨ المفاجأة الكبرى ✨</div>
+    <div class="finale-title-big">For My Amouna</div>
+    <div style="font-family:'Aref Ruqaa',serif;font-size:1rem;color:var(--deep);opacity:.75;margin-bottom:.6rem;animation:revealText 1.2s ease .3s both;">
+      هاد الفيديو فيه كل المشاعر اللي ما قدرت أحكيها بكلمات ♥️
+    </div>
+    <div class="finale-divider">🌸</div>
+    <div style="font-size:3.5rem;margin:.4rem 0;animation:heartPulse 1.8s ease-in-out infinite;">💖</div>
+    <div style="font-size:1.8rem;margin:.3rem 0;letter-spacing:.6rem;">🐱 🦜</div>
+    <a href="https://drive.google.com/file/d/1i3OlxyxbdWv92NDrgDMHkU3eBzT8MY7X/view?usp=drivesdk" target="_blank" class="video-btn-big">
+      🎬 اكبسي هنا يا أمونة ♥️
+    </a>
+    <div class="finale-divider" style="margin-top:1.2rem;">🌹</div>
+    <div style="font-family:'Great Vibes',cursive;font-size:clamp(1.5rem,5vw,2rem);color:var(--gold);margin:.6rem 0 .2rem;direction:ltr;animation:revealText 1.5s ease .6s both;">
+      Forever Yours ♥️
+    </div>
+    <div style="font-family:'Aref Ruqaa',serif;font-size:.95rem;color:var(--deep);opacity:.6;margin-top:.3rem;">
+      بحبك امونة 🌹♥️
+    </div>
+  </div>
+</div>
+
+<script>
+  const phases = document.querySelectorAll('.phase');
+  const dots   = document.querySelectorAll('.dot');
+  let cur = 0;
+
+  function goTo(idx) {
+    phases[cur].classList.remove('active');
+    dots[cur].classList.remove('active');
+    cur = idx;
+    phases[cur].classList.add('active');
+    dots[cur].classList.add('active');
+    window.scrollTo(0,0);
+    if (idx === 3) spawnConfetti();
+    if (idx === 7) startHearts();
+    updatePetals();
+  }
+
+  function checkSecret(val) {
+    const v = val.trim().toLowerCase().replace(/\s/g,'');
+    const err = document.getElementById('secret-error');
+    if (v === 'amouna' || v === 'امونة' || v === 'امونه') {
+      document.getElementById('secret-locked').style.display = 'none';
+      document.getElementById('secret-message').style.display = 'block';
+      err.style.display = 'none';
+    } else if (v.length > 3) {
+      err.style.display = 'block';
+    } else {
+      err.style.display = 'none';
+    }
+  }
+
+  function updateCountdown() {
+    const wedding = new Date('2025-10-10T00:00:00');
+    const now = new Date();
+    const diff = now - wedding;
+    const days = Math.floor(diff / 86400000);
+    const hrs  = Math.floor((diff % 86400000) / 3600000);
+    const mins = Math.floor((diff % 3600000)  / 60000);
+    const secs = Math.floor((diff % 60000)    / 1000);
+    document.getElementById('cd-days').textContent = days;
+    document.getElementById('cd-hrs').textContent  = String(hrs).padStart(2,'0');
+    document.getElementById('cd-min').textContent  = String(mins).padStart(2,'0');
+    document.getElementById('cd-sec').textContent  = String(secs).padStart(2,'0');
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // Bubbles on phase 1
+  const phase1el = document.getElementById('phase1');
+  function spawnBubble() {
+    const b = document.createElement('div');
+    b.className = 'bubble';
+    const size = 18 + Math.random() * 38;
+    b.style.width  = size + 'px';
+    b.style.height = size + 'px';
+    b.style.left   = (Math.random() * 92) + '%';
+    b.style.bottom = '-60px';
+    const dur = 5 + Math.random() * 7;
+    b.style.animationDuration  = dur + 's';
+    b.style.animationDelay     = (Math.random() * 3) + 's';
+    phase1el.appendChild(b);
+    setTimeout(() => b.remove(), (dur + 3.5) * 1000);
+  }
+  for (let i = 0; i < 10; i++) spawnBubble();
+  setInterval(() => { if (cur === 0) spawnBubble(); }, 900);
+
+  // Petals
+  const petalEmojis = ['🌹','🌸','🌺'];
+  const petalBox = document.getElementById('petalsContainer');
+  function spawnPetal() {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.textContent = petalEmojis[Math.floor(Math.random()*petalEmojis.length)];
+    p.style.left = Math.random()*100+'vw';
+    p.style.fontSize = (.8+Math.random()*.9)+'rem';
+    const dur = 7+Math.random()*8;
+    p.style.animationDuration = dur+'s';
+    p.style.animationDelay = (-Math.random()*dur)+'s';
+    p.style.opacity = .3+Math.random()*.4;
+    petalBox.appendChild(p);
+    setTimeout(()=>p.remove(),(dur+2)*1000);
+  }
+  for(let i=0;i<15;i++) spawnPetal();
+  setInterval(spawnPetal,1500);
+
+  function spawnConfetti() {
+    const card = document.getElementById('milestoneCard');
+    const pool = ['🌹','✨','🎉','❤️','🦜','🐱','💖'];
+    for(let i=0;i<18;i++) {
+      setTimeout(()=>{
+        const e = document.createElement('div');
+        e.className='confetti-emoji';
+        e.textContent = pool[Math.floor(Math.random()*pool.length)];
+        e.style.left=(8+Math.random()*84)+'%';
+        e.style.top=(5+Math.random()*65)+'%';
+        e.style.animationDuration=(1.4+Math.random()*1.8)+'s';
+        card.appendChild(e);
+        setTimeout(()=>e.remove(),3200);
+      },i*130);
+    }
+  }
+
+  let hi;
+  function startHearts() {
+    if(hi) return;
+    const ph=document.getElementById('phase8');
+    hi=setInterval(()=>{
+      const h=document.createElement('div');
+      h.className='hearts-float';
+      h.textContent=['♥️','🌹','💖','✨'][Math.floor(Math.random()*4)];
+      h.style.left=(8+Math.random()*84)+'%';
+      h.style.bottom='8%';
+      h.style.animationDuration=(2+Math.random()*2)+'s';
+      ph.appendChild(h);
+      setTimeout(()=>h.remove(),4200);
+    },650);
+  }
+
+  // Stars on phase 1
+  const starsEl = document.getElementById('starsContainer');
+  function spawnStars() {
+    for (let i = 0; i < 55; i++) {
+      const s = document.createElement('div');
+      s.className = 'star-dot';
+      const size = 1 + Math.random() * 2.5;
+      s.style.cssText = `
+        width:${size}px; height:${size}px;
+        left:${Math.random()*100}%; top:${Math.random()*100}%;
+        animation-duration:${1.5 + Math.random()*3}s;
+        animation-delay:${Math.random()*4}s;
+        opacity:${0.1 + Math.random()*0.5};
+      `;
+      starsEl.appendChild(s);
+    }
+  }
+  spawnStars();
+
+  function spawnDarkHeart() {
+    if (cur !== 0) return;
+    const h = document.createElement('div');
+    h.className = 'dark-heart';
+    const emojis = ['❤️','💗','💖','🩷','💕'];
+    h.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    h.style.cssText = `
+      left:${5 + Math.random()*88}%;
+      bottom:${-5 + Math.random()*20}%;
+      font-size:${0.8 + Math.random()*1.4}rem;
+      animation-duration:${6 + Math.random()*8}s;
+      animation-delay:${Math.random()*2}s;
+    `;
+    document.getElementById('phase1').appendChild(h);
+    setTimeout(() => h.remove(), 14000);
+  }
+  for (let i = 0; i < 8; i++) setTimeout(spawnDarkHeart, i * 700);
+  setInterval(spawnDarkHeart, 1200);
+
+  function updatePetals() {
+    document.body.classList.toggle('petals-hidden', cur === 0);
+  }
+  updatePetals();
+
+  // Music
+  let musicPlaying = false;
+  let musicStarted = false;
+
+  function startSurprise() {
+    const bgMusic = document.getElementById('bgMusic');
+    bgMusic.volume = 0.45;
+    const playPromise = bgMusic.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        musicPlaying = true;
+        musicStarted = true;
+        document.getElementById('music-btn').textContent = '🎶';
+        document.getElementById('music-btn').style.opacity = '1';
+      }).catch(() => {});
+    }
+    goTo(1);
+    document.body.classList.remove('petals-hidden');
+  }
+
+  function toggleMusic() {
+    const bgMusic = document.getElementById('bgMusic');
+    const btn = document.getElementById('music-btn');
+    if (musicPlaying) {
+      bgMusic.pause();
+      btn.textContent = '🎵';
+      btn.style.opacity = '.55';
+      musicPlaying = false;
+    } else {
+      bgMusic.play().then(() => {
+        musicPlaying = true;
+        btn.textContent = '🎶';
+        btn.style.opacity = '1';
+      }).catch(() => {});
+    }
+  }
+</script>
+</body>
+</html>
